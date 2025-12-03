@@ -1,0 +1,108 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<section class="package-detail section">
+  <div class="container">
+    <div class="package-detail-header">
+      <img src="<%= package.imageUrl %>" alt="<%= package.title %>" class="package-detail-image">
+      <div class="package-detail-info">
+        <span class="package-type"><%= package.type %></span>
+        <h1><%= package.title %></h1>
+        <p class="package-location">📍 <%= package.location %></p>
+        <div class="package-rating">
+          <span>⭐ <%= package.rating.toFixed(1) %></span>
+          <span>(<%= package.reviewCount %> reviews)</span>
+        </div>
+        <div class="package-meta-large">
+          <div class="meta-item">
+            <strong>Duration:</strong> <%= package.duration %> days
+          </div>
+          <div class="meta-item">
+            <strong>Difficulty:</strong> <span class="difficulty <%= package.difficulty.toLowerCase() %>"><%= package.difficulty %></span>
+          </div>
+          <div class="meta-item">
+            <strong>Group Size:</strong> Max <%= package.maxGroupSize %> people
+          </div>
+        </div>
+        <div class="package-price-large">
+          <span class="price-label">Starting from</span>
+          <span class="price-amount">$<%= package.price %></span>
+          <span class="price-note">per person</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="package-detail-content">
+      <div class="detail-section">
+        <h2>About This Adventure</h2>
+        <p><%= package.description %></p>
+      </div>
+
+      <% if (package.highlights && package.highlights.length > 0) { %>
+      <div class="detail-section">
+        <h2>Highlights</h2>
+        <ul class="highlights-list">
+          <% package.highlights.forEach(highlight => { %>
+            <li>✓ <%= highlight %></li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
+
+      <% if (package.included && package.included.length > 0) { %>
+      <div class="detail-section">
+        <h2>What's Included</h2>
+        <ul class="included-list">
+          <% package.included.forEach(item => { %>
+            <li>✓ <%= item %></li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
+
+      <% if (user) { %>
+      <div class="booking-form-section">
+        <h2>Book This Adventure</h2>
+        <form id="booking-form" class="booking-form">
+          <input type="hidden" name="packageId" value="<%= package._id %>">
+          
+          <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" required min="<%= new Date().toISOString().split('T')[0] %>">
+          </div>
+
+          <div class="form-group">
+            <label for="numberOfPeople">Number of People:</label>
+            <input type="number" id="numberOfPeople" name="numberOfPeople" min="1" max="<%= package.maxGroupSize %>" value="1" required>
+          </div>
+
+          <div class="form-group">
+            <label for="specialRequests">Special Requests (Optional):</label>
+            <textarea id="specialRequests" name="specialRequests" rows="3"></textarea>
+          </div>
+
+          <div class="booking-summary">
+            <p><strong>Price Breakdown:</strong></p>
+            <p>Base Price: $<span id="base-price"><%= package.price %></span> × <span id="people-count">1</span> = $<span id="subtotal"><%= package.price %></span></p>
+            <p id="discounts-applied"></p>
+            <p class="total-price">Total: $<span id="total-price"><%= package.price %></span></p>
+          </div>
+
+          <button type="submit" class="btn-primary btn-large">Confirm Booking</button>
+        </form>
+      </div>
+      <% } else { %>
+      <div class="login-prompt">
+        <p>Please <a href="/auth/login">login</a> or <a href="/auth/signup">sign up</a> to book this package.</p>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<script>
+const packagePrice = '<%= package.price %>';
+const packageId = '<%= package._id %>';
+</script>
+
+<%- include('partials/footer') %>

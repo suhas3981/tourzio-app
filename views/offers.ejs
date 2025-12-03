@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<section class="offers-header">
+  <div class="container">
+    <h1>Special Offers & Deals</h1>
+    <p>Don't miss these limited time offers for adventurous travelers</p>
+  </div>
+</section>
+
+<section class="offers-section section">
+  <div class="container">
+    <div class="offers-grid-large">
+      <div class="offer-card-large">
+        <span class="offer-badge">SAVE 20%</span>
+        <h2>Early Bird Discount</h2>
+        <p>Book 60 days in advance and get 20% off on all adventure packages</p>
+        <p class="offer-validity">Applied automatically at checkout</p>
+      </div>
+
+      <div class="offer-card-large">
+        <span class="offer-badge">SAVE 15%</span>
+        <h2>Group Discount</h2>
+        <p>Travel with 4+ people and get 15% off on your entire booking</p>
+        <p class="offer-validity">No expiration - Always available</p>
+      </div>
+
+      <div class="offer-card-large">
+        <span class="offer-badge">SAVE 10%</span>
+        <h2>Student Discount</h2>
+        <p>Students get an extra 10% off on all bookings with valid ID</p>
+        <p class="offer-validity">Year-round offer</p>
+      </div>
+
+      <% if (offers && offers.length > 0) { %>
+        <% offers.forEach(offer => { %>
+          <div class="offer-card-large">
+            <span class="offer-badge">SAVE <%= offer.discountPercentage %>%</span>
+            <h2><%= offer.title %></h2>
+            <p><%= offer.description %></p>
+            <% if (offer.code) { %>
+              <p class="offer-code">Code: <strong><%= offer.code %></strong></p>
+            <% } %>
+            <% if (offer.validUntil) { %>
+              <p class="offer-validity">Valid until: <%= new Date(offer.validUntil).toLocaleDateString() %></p>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+
+    <div class="offer-info">
+      <h3>How to Use Offers</h3>
+      <ul>
+        <li>Most discounts are applied automatically at checkout</li>
+        <li>Multiple discounts can be combined for maximum savings</li>
+        <li>Student discount requires verification during booking</li>
+        <li>For promo codes, enter them at checkout to apply</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<section class="hero">
+  <div class="container">
+    <h1>Explore the World's Most Thrilling Destinations</h1>
+    <p>From towering mountains to sun-kissed beaches, find your next unforgettable journey with our curated adventure packages.</p>
+    <a href="/packages" class="btn-hero">Explore Packages</a>
+  </div>
+</section>
+
+<section class="featured-packages section">
+  <div class="container">
+    <h2>Featured Adventures</h2>
+    <p class="section-subtitle">Hand-picked, highly-rated packages for your immediate wanderlust</p>
+    <div class="package-grid" id="featured-packages">
+      <!-- Packages will be loaded here -->
+    </div>
+    <div class="text-center">
+      <a href="/packages" class="btn-secondary">View All Packages</a>
+    </div>
+  </div>
+</section>
+
+<section class="offers-preview section bg-light">
+  <div class="container">
+    <h2>Special Offers & Deals</h2>
+    <p class="section-subtitle">Limited time offers for adventurous travelers</p>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <h3>Early Bird Discount</h3>
+        <p class="discount">20% OFF</p>
+        <p>Book 60 days in advance and save!</p>
+      </div>
+      <div class="offer-card">
+        <h3>Group Discount</h3>
+        <p class="discount">15% OFF</p>
+        <p>Travel with 4+ people</p>
+      </div>
+      <div class="offer-card">
+        <h3>Student Discount</h3>
+        <p class="discount">10% OFF</p>
+        <p>Valid student ID required</p>
+      </div>
+    </div>
+    <div class="text-center">
+      <a href="/offers" class="btn-secondary">View All Offers</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section section">
+  <div class="container text-center">
+    <h2>Ready for Your Next Adventure?</h2>
+    <p>Join thousands of travelers who have discovered amazing experiences with Tourzio</p>
+    <% if (!user) { %>
+      <a href="/auth/signup" class="btn-hero">Get Started</a>
+    <% } else { %>
+      <a href="/packages" class="btn-hero">Browse Packages</a>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

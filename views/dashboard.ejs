@@ -1,0 +1,77 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<section class="dashboard-section section">
+  <div class="container">
+    <h1>Welcome Back, <%= user.name %>!</h1>
+    <p class="dashboard-subtitle">Manage your bookings and view your travel history</p>
+
+    <div class="dashboard-content">
+      <div class="bookings-section">
+        <h2>Upcoming Bookings</h2>
+        <% if (upcomingBookings.length === 0) { %>
+          <div class="empty-state">
+            <p>No upcoming adventures</p>
+            <a href="/packages" class="btn-primary">Explore Packages</a>
+          </div>
+        <% } else { %>
+          <div class="bookings-list">
+            <% upcomingBookings.forEach(booking => { %>
+              <div class="booking-card">
+                <div class="booking-image" style="background-image: url('<%= booking.package.imageUrl %>')"></div>
+                <div class="booking-details">
+                  <h3><%= booking.package.title %></h3>
+                  <p class="booking-location">📍 <%= booking.package.location %></p>
+                  <div class="booking-meta">
+                    <p><strong>Start Date:</strong> <%= new Date(booking.startDate).toLocaleDateString() %></p>
+                    <p><strong>People:</strong> <%= booking.numberOfPeople %></p>
+                    <p><strong>Status:</strong> <span class="status <%= booking.status %>"><%= booking.status %></span></p>
+                  </div>
+                  <% if (booking.discountsApplied.length > 0) { %>
+                    <p class="booking-discounts">
+                      <strong>Discounts:</strong> <%= booking.discountsApplied.join(', ') %>
+                    </p>
+                  <% } %>
+                  <p class="booking-price"><strong>Total:</strong> $<%= booking.totalPrice %></p>
+                </div>
+                <div class="booking-actions">
+                  <button class="btn-danger" onclick="cancelBooking('<%= booking._id %>')">Cancel Booking</button>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="bookings-section">
+        <h2>Past Adventures</h2>
+        <% if (pastBookings.length === 0) { %>
+          <div class="empty-state">
+            <p>No completed journeys yet</p>
+            <p>Time to get out there!</p>
+          </div>
+        <% } else { %>
+          <div class="bookings-list">
+            <% pastBookings.forEach(booking => { %>
+              <div class="booking-card past">
+                <div class="booking-image" style="background-image: url('<%= booking.package.imageUrl %>')"></div>
+                <div class="booking-details">
+                  <h3><%= booking.package.title %></h3>
+                  <p class="booking-location">📍 <%= booking.package.location %></p>
+                  <div class="booking-meta">
+                    <p><strong>Date:</strong> <%= new Date(booking.startDate).toLocaleDateString() %></p>
+                    <p><strong>People:</strong> <%= booking.numberOfPeople %></p>
+                    <p><strong>Status:</strong> <span class="status <%= booking.status %>"><%= booking.status %></span></p>
+                  </div>
+                  <p class="booking-price"><strong>Total:</strong> $<%= booking.totalPrice %></p>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
