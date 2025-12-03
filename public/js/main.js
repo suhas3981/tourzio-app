@@ -5,47 +5,45 @@ if (bookingForm) {
   const startDateInput = document.getElementById('startDate');
 
   // Update price calculation
-  function updatePriceCalculation() {
-    const numberOfPeople = parseInt(numberOfPeopleInput.value) || 1;
-    const startDate = new Date(startDateInput.value);
-    const today = new Date();
-    const daysInAdvance = Math.floor((startDate - today) / (1000 * 60 * 60 * 24));
+ function updatePriceCalculation() {
+  const numberOfPeople = parseInt(numberOfPeopleInput.value) || 1;
+  const startDate = new Date(startDateInput.value);
+  const today = new Date();
+  const daysInAdvance = Math.floor((startDate - today) / (1000 * 60 * 60 * 24));
 
-    let subtotal = packagePrice * numberOfPeople;
-    let discounts = [];
-    let totalDiscount = 0;
+  let subtotal = packagePrice * numberOfPeople;
+  let discounts = [];
+  let totalDiscount = 0;
 
-    // Group discount
-    if (numberOfPeople >= 4) {
-      discounts.push('Group Discount (15%): -$' + (subtotal * 0.15).toFixed(2));
-      totalDiscount += 0.15;
-    }
-
-    // Early bird discount
-    if (daysInAdvance >= 60) {
-      const earlyBirdDiscount = subtotal * (1 - totalDiscount) * 0.20;
-      discounts.push('Early Bird Discount (20%): -$' + earlyBirdDiscount.toFixed(2));
-      totalDiscount += 0.20 * (1 - totalDiscount);
-    }
-
-    // Student discount (check if user is student from session)
-    // This would need to be passed from the server
-
-    const total = subtotal * (1 - totalDiscount);
-
-    document.getElementById('base-price').textContent = packagePrice;
-    document.getElementById('people-count').textContent = numberOfPeople;
-    document.getElementById('subtotal').textContent = subtotal.toFixed(0);
-    
-    const discountsElement = document.getElementById('discounts-applied');
-    if (discounts.length > 0) {
-      discountsElement.innerHTML = '<strong>Discounts:</strong><br>' + discounts.join('<br>');
-    } else {
-      discountsElement.innerHTML = '';
-    }
-
-    document.getElementById('total-price').textContent = Math.round(total);
+  // Group discount
+  if (numberOfPeople >= 4) {
+    discounts.push('Group Discount (15%): -₹' + (subtotal * 0.15).toFixed(2));
+    totalDiscount += 0.15;
   }
+
+  // Early bird discount
+  if (daysInAdvance >= 60) {
+    const earlyBirdDiscount = subtotal * (1 - totalDiscount) * 0.20;
+    discounts.push('Early Bird Discount (20%): -₹' + earlyBirdDiscount.toFixed(2));
+    totalDiscount += 0.20 * (1 - totalDiscount);
+  }
+
+  const total = subtotal * (1 - totalDiscount);
+
+  document.getElementById('base-price').textContent = packagePrice;
+  document.getElementById('people-count').textContent = numberOfPeople;
+  document.getElementById('subtotal').textContent = subtotal.toFixed(0);
+  
+  const discountsElement = document.getElementById('discounts-applied');
+  if (discounts.length > 0) {
+    discountsElement.innerHTML = '<strong>Discounts:</strong><br>' + discounts.join('<br>');
+  } else {
+    discountsElement.innerHTML = '';
+  }
+
+  document.getElementById('total-price').textContent = Math.round(total);
+}
+
 
   numberOfPeopleInput.addEventListener('input', updatePriceCalculation);
   startDateInput.addEventListener('change', updatePriceCalculation);

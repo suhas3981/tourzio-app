@@ -2,13 +2,26 @@ const Package = require('../models/Package');
 
 exports.getAllPackages = async (req, res) => {
   try {
-    const { type, location, minPrice, maxPrice, difficulty } = req.query;
+    const { type, location, minPrice, maxPrice, difficulty, weather, bestSeason } = req.query;
     
     let filter = { isActive: true };
     
+    // Type filter
     if (type) filter.type = type;
+    
+    // Location/City filter (case-insensitive, partial match)
     if (location) filter.location = new RegExp(location, 'i');
+    
+    // Difficulty filter
     if (difficulty) filter.difficulty = difficulty;
+    
+    // Weather filter (case-insensitive, partial match)
+    if (weather) filter.weather = new RegExp(weather, 'i');
+    
+    // Best Season filter (case-insensitive, partial match)
+    if (bestSeason) filter.bestSeason = new RegExp(bestSeason, 'i');
+    
+    // Price range filter
     if (minPrice || maxPrice) {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
@@ -30,15 +43,15 @@ exports.getAllPackages = async (req, res) => {
 
 exports.getPackageById = async (req, res) => {
   try {
-    const package = await Package.findById(req.params.id);
+    const packageData = await Package.findById(req.params.id);
     
-    if (!package) {
+    if (!packageData) {
       return res.status(404).render('home', { 
         error: 'Package not found' 
       });
     }
 
-    res.render('package-detail', { package });
+    res.render('package-detail', { package: packageData });
   } catch (error) {
     console.error('Error fetching package:', error);
     res.status(500).render('home', { 

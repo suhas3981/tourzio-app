@@ -16,7 +16,7 @@ const packageSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['Trekking', 'Water Sports', 'Wildlife', 'Camping', 'Mountain Climbing', 'Desert Safari', 'Other'],
+    enum: ['Trekking', 'Water Sports', 'Wildlife', 'Camping', 'Mountain Climbing', 'Desert Safari', 'Nature', 'Beach', 'Cultural', 'Spiritual', 'Adventure', 'Other'],
     required: true
   },
   duration: {
@@ -49,6 +49,16 @@ const packageSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
     default: '/images/default-package.jpg'
+  },
+  bestSeason: {
+    type: String,
+    trim: true,
+    // Examples: 'winter', 'summer', 'spring, autumn', 'winter, summer'
+  },
+  weather: {
+    type: String,
+    trim: true,
+    // Examples: 'sunny, pleasant', 'cool, misty', 'moderate, humid'
   },
   highlights: [String],
   included: [String],

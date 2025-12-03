@@ -12,32 +12,73 @@
   <div class="container">
     <div class="filters-bar">
       <form id="filter-form" method="GET">
+        <!-- Adventure Type Filter -->
         <select name="type" onchange="this.form.submit()">
           <option value="">All Types</option>
           <option value="Trekking" <%= filters.type === 'Trekking' ? 'selected' : '' %>>Trekking</option>
           <option value="Water Sports" <%= filters.type === 'Water Sports' ? 'selected' : '' %>>Water Sports</option>
           <option value="Wildlife" <%= filters.type === 'Wildlife' ? 'selected' : '' %>>Wildlife</option>
           <option value="Camping" <%= filters.type === 'Camping' ? 'selected' : '' %>>Camping</option>
+          <option value="Mountain Climbing" <%= filters.type === 'Mountain Climbing' ? 'selected' : '' %>>Mountain Climbing</option>
+          <option value="Desert Safari" <%= filters.type === 'Desert Safari' ? 'selected' : '' %>>Desert Safari</option>
+          <option value="Nature" <%= filters.type === 'Nature' ? 'selected' : '' %>>Nature</option>
+          <option value="Beach" <%= filters.type === 'Beach' ? 'selected' : '' %>>Beach</option>
+          <option value="Cultural" <%= filters.type === 'Cultural' ? 'selected' : '' %>>Cultural</option>
+          <option value="Spiritual" <%= filters.type === 'Spiritual' ? 'selected' : '' %>>Spiritual</option>
+          <option value="Adventure" <%= filters.type === 'Adventure' ? 'selected' : '' %>>Adventure</option>
         </select>
 
+        <!-- Location/City Filter -->
+        <input type="text" name="location" placeholder="Search by City/Location" value="<%= filters.location || '' %>">
+
+        <!-- Difficulty Filter -->
         <select name="difficulty" onchange="this.form.submit()">
           <option value="">All Difficulties</option>
           <option value="Easy" <%= filters.difficulty === 'Easy' ? 'selected' : '' %>>Easy</option>
           <option value="Moderate" <%= filters.difficulty === 'Moderate' ? 'selected' : '' %>>Moderate</option>
           <option value="Challenging" <%= filters.difficulty === 'Challenging' ? 'selected' : '' %>>Challenging</option>
+          <option value="Expert" <%= filters.difficulty === 'Expert' ? 'selected' : '' %>>Expert</option>
         </select>
 
-        <input type="number" name="minPrice" placeholder="Min Price" value="<%= filters.minPrice || '' %>">
-        <input type="number" name="maxPrice" placeholder="Max Price" value="<%= filters.maxPrice || '' %>">
-        
+        <!-- Best Season Filter -->
+        <select name="bestSeason" onchange="this.form.submit()">
+          <option value="">All Seasons</option>
+          <option value="winter" <%= filters.bestSeason === 'winter' ? 'selected' : '' %>>Winter</option>
+          <option value="summer" <%= filters.bestSeason === 'summer' ? 'selected' : '' %>>Summer</option>
+          <option value="spring" <%= filters.bestSeason === 'spring' ? 'selected' : '' %>>Spring</option>
+          <option value="autumn" <%= filters.bestSeason === 'autumn' ? 'selected' : '' %>>Autumn</option>
+          <option value="monsoon" <%= filters.bestSeason === 'monsoon' ? 'selected' : '' %>>Monsoon</option>
+          <option value="year-round" <%= filters.bestSeason === 'year-round' ? 'selected' : '' %>>Year Round</option>
+        </select>
+
+        <!-- Weather Filter -->
+        <select name="weather" onchange="this.form.submit()">
+          <option value="">All Weather</option>
+          <option value="sunny" <%= filters.weather === 'sunny' ? 'selected' : '' %>>Sunny</option>
+          <option value="cool" <%= filters.weather === 'cool' ? 'selected' : '' %>>Cool</option>
+          <option value="cold" <%= filters.weather === 'cold' ? 'selected' : '' %>>Cold</option>
+          <option value="pleasant" <%= filters.weather === 'pleasant' ? 'selected' : '' %>>Pleasant</option>
+          <option value="humid" <%= filters.weather === 'humid' ? 'selected' : '' %>>Humid</option>
+          <option value="rainy" <%= filters.weather === 'rainy' ? 'selected' : '' %>>Rainy</option>
+        </select>
+
+        <!-- Price Range Filter -->
+       <input type="number" name="minPrice" placeholder="Min Price (₹)" value="<%= filters.minPrice || '' %>">
+<input type="number" name="maxPrice" placeholder="Max Price (₹)" value="<%= filters.maxPrice || '' %>">
+
         <button type="submit" class="btn-primary">Apply Filters</button>
-        <a href="/packages" class="btn-secondary">Clear</a>
+        <a href="/packages" class="btn-secondary">Clear All</a>
       </form>
+    </div>
+
+    <!-- Results count -->
+    <div class="results-info">
+      <p>Showing <%= packages.length %> package<%= packages.length !== 1 ? 's' : '' %></p>
     </div>
 
     <div class="package-grid">
       <% if (packages.length === 0) { %>
-        <p class="no-results">No packages found matching your criteria.</p>
+        <p class="no-results">No packages found matching your criteria. Try different filters!</p>
       <% } else { %>
         <% packages.forEach(package => { %>
           <div class="package-card">
@@ -46,6 +87,19 @@
               <span class="package-type"><%= package.type %></span>
               <h3><%= package.title %></h3>
               <p class="package-location">📍 <%= package.location %></p>
+              
+              <!-- Show weather and season if available -->
+              <% if (package.weather || package.bestSeason) { %>
+                <div class="package-info-tags">
+                  <% if (package.weather) { %>
+                    <span class="info-tag">🌤️ <%= package.weather %></span>
+                  <% } %>
+                  <% if (package.bestSeason) { %>
+                    <span class="info-tag">📅 <%= package.bestSeason %></span>
+                  <% } %>
+                </div>
+              <% } %>
+              
               <p class="package-description"><%= package.description.substring(0, 100) %>...</p>
               <div class="package-meta">
                 <span>⭐ <%= package.rating.toFixed(1) %> (<%= package.reviewCount %>)</span>
@@ -55,7 +109,7 @@
               <div class="package-footer">
                 <div class="package-price">
                   <span class="price-label">From</span>
-                  <span class="price-amount">$<%= package.price %></span>
+                  <span class="price-amount">₹<%= package.price %></span>
                 </div>
                 <a href="/packages/<%= package._id %>" class="btn-primary">View Details</a>
               </div>
